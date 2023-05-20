@@ -1,0 +1,61 @@
+
+.control{
+    display: flex;
+    width: 300px;
+    justify-content: space-around;
+    padding: 3px;
+    margin: 5px;
+}
+
+button{
+    background-color: gold;
+    border-radius: 1px;
+    box-shadow: 1px 1px black;
+    font-family: fantasy;
+    font-size: 20px;
+}
+
+.tubes{
+    display: flex;
+    width: 500px;
+    flex-wrap: wrap;
+    gap:50px 10px;
+}
+
+.tube{
+    border-left:1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    height: 240px;
+    width: 60px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.ball{
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+.selected{
+    border: 3px solid red;
+}
+
+.finised{
+    border: 5px solid green;
+}
+
+.win{
+    border: 5px solid gold;
+}
+
+#colorNumber{
+    background-color: gold;
+    border-radius: 1px;
+    box-shadow: 1px 1px black;
+    font-family: fantasy;
+    font-size: 20px;
+}
