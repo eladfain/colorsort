@@ -93,8 +93,9 @@ function checkFinishedTube(tube){
     }
 }
 function checkWin(){
+    const numberOfColorsToWin=document.getElementById('colorNumber').value;
     const finishedTubes=document.querySelectorAll(".finised");
-    if(finishedTubes.length===colors.length){
+    if(finishedTubes.length===numberOfColorsToWin){
         finishedTubes.forEach(tube=>{
             tube.classList.remove('finised');
             tube.classList.add('win')
