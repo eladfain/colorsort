@@ -77,9 +77,9 @@ function tubeClick(e){
                 targetTube.children.length===0)){
                     originTube.removeChild(ballToMove);
                     targetTube.prepend(ballToMove);
-                    checkFinishedTube(targetTube);
+                    const tubeFinish=checkFinishedTube(targetTube);
                     checkWin();
-                    history.push({"origin":selected,"target":id});
+                    history.push({"origin":selected,"target":id,'finished':tubeFinish});
                 }
             document.getElementById(selected).classList.remove('selected');
             selected='';
@@ -97,7 +97,9 @@ function checkFinishedTube(tube){
     })
     if(children.length===4 && allTheSame){
         tube.classList.add('finised');
+        return tube.id;
     }
+    return '';
 }
 function checkWin(){
     const numberOfColorsToWin=(+document.getElementById('colorNumber').value);
@@ -114,10 +116,14 @@ function restart(){
 }
 function undo(){
     if(history.length){
-        const {origin,target}=history.pop();
+        const {origin,target,finished}=history.pop();
         const ball=document.getElementById(target).children[0];
         document.getElementById(target).removeChild(ball);
         document.getElementById(origin).prepend(ball);
+        if(finished){
+            document.getElementById(finished).classList.remove('finised');
+        }
+      
     }
   
 }
