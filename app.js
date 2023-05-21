@@ -79,9 +79,9 @@ function tubeClick(e){
                     targetTube.prepend(ballToMove);
                     checkFinishedTube(targetTube);
                     checkWin();
+                    history.push({"origin":selected,"target":id});
                 }
             document.getElementById(selected).classList.remove('selected');
-            history.push({"origin":selected,"target":id});
             selected='';
         }
     }
