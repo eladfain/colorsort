@@ -1,9 +1,13 @@
-let selected='';
-const colors=['red','blue','green','black','yellow','blueviolet','aqua','brown'];
+let selected='',
+colorArr;
+const colors=['red','blue','green','black','yellow','blueviolet','aqua','brown'],
+history=[];
 function start(){
-    document.querySelectorAll('.tube').forEach(tube=>tube.innerHTML='');
-    const colorArr=getRandomColorArr(),
-    tubecontainer=document.querySelector('.tubes');
+    colorArr=getRandomColorArr();
+    initGame(colorArr);
+}
+function initGame(colorArr){
+    const tubecontainer=document.querySelector('.tubes');
     tubecontainer.innerHTML='';
     for(let i=0;i<(colorArr.length+2);i++){
         const tube=document.createElement('div');
@@ -12,7 +16,7 @@ function start(){
         tubecontainer.appendChild(tube);
     }
     displayBalls(colorArr);
-    document.querySelectorAll('.tube').forEach(tube=>tube.addEventListener('click',e=>tubeClick(e),false));
+    document.querySelectorAll('.tube').forEach(tube=>tube.addEventListener('click',e=>tubeClick(e)));
 }
 function displayBalls(arr){
     const tubes=document.querySelectorAll('.tube');
@@ -58,27 +62,30 @@ function getRandomColorArr(){
     return colorArr;
 }
 function tubeClick(e){
-    const id=(e.target.id || e.target.parentNode.id);
-    if(!selected){
-        selected=id;
-        document.getElementById(selected).classList.add('selected');
-    }else{
-        const originTube=document.getElementById(selected);
-        const targetTube=document.getElementById(id);
-        const ballToMove=originTube.children[0];
-        const firstBallOnTarget=targetTube.children[0]
-        if((targetTube.children.length<4 && 
-            ballToMove.getAttribute('value')===firstBallOnTarget?.getAttribute('value')) ||
-            targetTube.children.length===0){
-                originTube.removeChild(ballToMove);
-                targetTube.prepend(ballToMove);
-                checkFinishedTube(targetTube);
-                checkWin();
-            }
-        document.getElementById(selected).classList.remove('selected');
-        
-        selected='';
+    if(!e.target.classList.contains('finised') && !e.target.parentNode.classList.contains('finised') ){
+        const id=(e.target.id || e.target.parentNode.id);
+        if(!selected){
+            selected=id;
+            document.getElementById(selected).classList.add('selected');
+        }else{
+            const originTube=document.getElementById(selected);
+            const targetTube=document.getElementById(id);
+            const ballToMove=originTube.children[0];
+            const firstBallOnTarget=targetTube.children[0]
+            if(ballToMove && ((targetTube.children.length<4 && 
+                ballToMove.getAttribute('value')===firstBallOnTarget?.getAttribute('value')) ||
+                targetTube.children.length===0)){
+                    originTube.removeChild(ballToMove);
+                    targetTube.prepend(ballToMove);
+                    checkFinishedTube(targetTube);
+                    checkWin();
+                }
+            document.getElementById(selected).classList.remove('selected');
+            history.push({"origin":selected,"target":id});
+            selected='';
+        }
     }
+    
 }
 function checkFinishedTube(tube){
     let allTheSame=true;
@@ -93,7 +100,7 @@ function checkFinishedTube(tube){
     }
 }
 function checkWin(){
-    const numberOfColorsToWin=document.getElementById('colorNumber').value;
+    const numberOfColorsToWin=(+document.getElementById('colorNumber').value);
     const finishedTubes=document.querySelectorAll(".finised");
     if(finishedTubes.length===numberOfColorsToWin){
         finishedTubes.forEach(tube=>{
@@ -103,8 +110,14 @@ function checkWin(){
     }
 }
 function restart(){
-
+    initGame(colorArr);
 }
 function undo(){
-
+    if(history.length){
+        const {origin,target}=history.pop();
+        const ball=document.getElementById(target).children[0];
+        document.getElementById(target).removeChild(ball);
+        document.getElementById(origin).prepend(ball);
+    }
+  
 }
